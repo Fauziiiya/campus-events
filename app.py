@@ -42,7 +42,15 @@ def init_db():
 
 @app.route("/")
 def home():
-    return redirect(url_for("create_event"))
+    return redirect(url_for("list_events"))
+
+
+@app.route("/events")
+def list_events():
+    conn = get_db()
+    events = conn.execute("SELECT * FROM events ORDER BY event_date").fetchall()
+    conn.close()
+    return render_template("events.html", events=events)
 
 
 @app.route("/events/new", methods=["GET", "POST"])
