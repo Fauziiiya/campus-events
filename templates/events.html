@@ -21,6 +21,7 @@
         <p>{{ event['event_date'] }} {{ event['event_time'] or '' }} · {{ event['venue'] or 'Venue TBA' }}</p>
         <p>{{ event['description'] or '' }}</p>
         <p>Capacity: {{ event['capacity'] or 'Not set' }} · Organiser: {{ event['organiser_name'] or 'Not set' }}</p>
+        <p><a href="{{ url_for('edit_event', event_id=event['id']) }}">Edit</a></p>
       </div>
       <hr>
     {% endfor %}

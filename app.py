@@ -84,9 +84,55 @@ def create_event():
         conn.close()
 
         flash("Event created successfully!", "success")
-        return redirect(url_for("create_event"))
+        return redirect(url_for("list_events"))
 
     return render_template("event_form.html", form={})
+
+
+@app.route("/events/<int:event_id>/edit", methods=["GET", "POST"])
+def edit_event(event_id):
+    conn = get_db()
+    event = conn.execute("SELECT * FROM events WHERE id = ?", (event_id,)).fetchone()
+
+    if event is None:
+        conn.close()
+        flash("Event not found.", "error")
+        return redirect(url_for("list_events"))
+
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        event_date = request.form.get("event_date", "").strip()
+
+        if not title or not event_date:
+            conn.close()
+            flash("Title and date are required.", "error")
+            return render_template("event_edit.html", form=request.form)
+
+        capacity = request.form.get("capacity", "").strip()
+        capacity = int(capacity) if capacity.isdigit() else None
+
+        conn.execute(
+            "UPDATE events SET title = ?, description = ?, venue = ?, event_date = ?, "
+            "event_time = ?, capacity = ?, organiser_name = ? WHERE id = ?",
+            (
+                title,
+                request.form.get("description", "").strip(),
+                request.form.get("venue", "").strip(),
+                event_date,
+                request.form.get("event_time", "").strip(),
+                capacity,
+                request.form.get("organiser_name", "").strip(),
+                event_id,
+            ),
+        )
+        conn.commit()
+        conn.close()
+
+        flash("Event updated successfully!", "success")
+        return redirect(url_for("list_events"))
+
+    conn.close()
+    return render_template("event_edit.html", form=dict(event))
 
 
 init_db()
