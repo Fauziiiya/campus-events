@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Event</title>
+</head>
+<body>
+  <h1>Create a New Event</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <p><strong>{{ category|upper }}:</strong> {{ message }}</p>
+    {% endfor %}
+  {% endwith %}
+
+  <form method="POST">
+    <p>Title*<br><input name="title" value="{{ form.get('title', '') }}"></p>
+    <p>Description<br><textarea name="description">{{ form.get('description', '') }}</textarea></p>
+    <p>Venue<br><input name="venue" value="{{ form.get('venue', '') }}"></p>
+    <p>Date*<br><input type="date" name="event_date" value="{{ form.get('event_date', '') }}"></p>
+    <p>Time<br><input name="event_time" placeholder="4:00 PM" value="{{ form.get('event_time', '') }}"></p>
+    <p>Capacity<br><input type="number" name="capacity" value="{{ form.get('capacity', '') }}"></p>
+    <p>Organiser name<br><input name="organiser_name" value="{{ form.get('organiser_name', '') }}"></p>
+    <button type="submit">Create event</button>
+  </form>
+</body>
+</html>

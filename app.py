@@ -1,7 +1,9 @@
+import os
 import sqlite3
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "dev-only-secret")
 DATABASE = "events.db"
 
 
@@ -40,7 +42,43 @@ def init_db():
 
 @app.route("/")
 def home():
-    return "Campus Events app is running!"
+    return redirect(url_for("create_event"))
+
+
+@app.route("/events/new", methods=["GET", "POST"])
+def create_event():
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        event_date = request.form.get("event_date", "").strip()
+
+        if not title or not event_date:
+            flash("Title and date are required.", "error")
+            return render_template("event_form.html", form=request.form)
+
+        capacity = request.form.get("capacity", "").strip()
+        capacity = int(capacity) if capacity.isdigit() else None
+
+        conn = get_db()
+        conn.execute(
+            "INSERT INTO events (title, description, venue, event_date, event_time, capacity, organiser_name) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                title,
+                request.form.get("description", "").strip(),
+                request.form.get("venue", "").strip(),
+                event_date,
+                request.form.get("event_time", "").strip(),
+                capacity,
+                request.form.get("organiser_name", "").strip(),
+            ),
+        )
+        conn.commit()
+        conn.close()
+
+        flash("Event created successfully!", "success")
+        return redirect(url_for("create_event"))
+
+    return render_template("event_form.html", form={})
 
 
 init_db()
