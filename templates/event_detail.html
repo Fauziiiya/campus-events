@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ event['title'] }}</title>
+</head>
+<body>
+  <p><a href="{{ url_for('list_events') }}">← Back to events</a></p>
+  <h1>{{ event['title'] }}</h1>
+  <p>{{ event['event_date'] }} {{ event['event_time'] or '' }} · {{ event['venue'] or 'Venue TBA' }}</p>
+  <p>{{ event['description'] or '' }}</p>
+  <p>Capacity: {{ event['capacity'] or 'Not set' }} · Organiser: {{ event['organiser_name'] or 'Not set' }}</p>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <p><strong>{{ category|upper }}:</strong> {{ message }}</p>
+    {% endfor %}
+  {% endwith %}
+
+  <h2>Register for this event</h2>
+  <form method="POST">
+    <p>Name*<br><input name="attendee_name" value="{{ form.get('attendee_name', '') }}"></p>
+    <p>Email*<br><input type="email" name="attendee_email" value="{{ form.get('attendee_email', '') }}"></p>
+    <button type="submit">Register</button>
+  </form>
+
+  <h2>Registered attendees ({{ registrations|length }})</h2>
+  {% if registrations %}
+    <ul>
+      {% for r in registrations %}
+        <li>{{ r['attendee_name'] }} ({{ r['attendee_email'] }})</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No one has registered yet.</p>
+  {% endif %}
+</body>
+</html>

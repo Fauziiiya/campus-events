@@ -153,6 +153,40 @@ def delete_event(event_id):
     flash("Event deleted successfully.", "success")
     return redirect(url_for("list_events"))
 
+@app.route("/events/<int:event_id>", methods=["GET", "POST"])
+def event_detail(event_id):
+    conn = get_db()
+    event = conn.execute("SELECT * FROM events WHERE id = ?", (event_id,)).fetchone()
+
+    if event is None:
+        conn.close()
+        flash("Event not found.", "error")
+        return redirect(url_for("list_events"))
+
+    if request.method == "POST":
+        name = request.form.get("attendee_name", "").strip()
+        email = request.form.get("attendee_email", "").strip()
+
+        if not name or not email or "@" not in email:
+            flash("Please enter your name and a valid email address.", "error")
+        else:
+            conn.execute(
+                "INSERT INTO registrations (event_id, attendee_name, attendee_email) VALUES (?, ?, ?)",
+                (event_id, name, email),
+            )
+            conn.commit()
+            conn.close()
+            flash("You are registered!", "success")
+            return redirect(url_for("event_detail", event_id=event_id))
+
+    registrations = conn.execute(
+        "SELECT * FROM registrations WHERE event_id = ? ORDER BY id", (event_id,)
+    ).fetchall()
+    conn.close()
+    return render_template(
+        "event_detail.html", event=event, registrations=registrations, form=request.form
+    )
+
 init_db()
 
 if __name__ == "__main__":
