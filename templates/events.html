@@ -22,6 +22,11 @@
         <p>{{ event['description'] or '' }}</p>
         <p>Capacity: {{ event['capacity'] or 'Not set' }} · Organiser: {{ event['organiser_name'] or 'Not set' }}</p>
         <p><a href="{{ url_for('edit_event', event_id=event['id']) }}">Edit</a></p>
+        <form method="POST"
+              action="{{ url_for('delete_event', event_id=event['id']) }}"
+              onsubmit="return confirm('Delete this event? This cannot be undone.');">
+          <button type="submit">Delete</button>
+        </form>
       </div>
       <hr>
     {% endfor %}

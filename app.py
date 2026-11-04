@@ -135,6 +135,24 @@ def edit_event(event_id):
     return render_template("event_edit.html", form=dict(event))
 
 
+@app.route("/events/<int:event_id>/delete", methods=["POST"])
+def delete_event(event_id):
+    conn = get_db()
+    event = conn.execute("SELECT id FROM events WHERE id = ?", (event_id,)).fetchone()
+
+    if event is None:
+        conn.close()
+        flash("Event not found.", "error")
+        return redirect(url_for("list_events"))
+
+    conn.execute("DELETE FROM registrations WHERE event_id = ?", (event_id,))
+    conn.execute("DELETE FROM events WHERE id = ?", (event_id,))
+    conn.commit()
+    conn.close()
+
+    flash("Event deleted successfully.", "success")
+    return redirect(url_for("list_events"))
+
 init_db()
 
 if __name__ == "__main__":
