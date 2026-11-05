@@ -15,6 +15,7 @@ Students often miss campus events because details are scattered across group cha
 - Edit an event
 - Delete an event (with a confirmation prompt; its registrations are removed too)
 - Register for an event with a name and email
+- Choose a category for each event (Academic, Social, Sports, Career or Other)
 - View the list of people registered for each event
 - Validation with clear error and success messages
 
@@ -58,7 +59,7 @@ See `.env.example`. The app uses one variable:
 
 The app uses SQLite. The database file (`events.db`) and its tables are created automatically the first time the app starts, so no manual setup is needed.
 
-- `events`: id, title, description, venue, event_date, event_time, capacity, organiser_name
+- `events`: id, title, description, venue, category, event_date, event_time, capacity, organiser_name
 - `registrations`: id, event_id (links to events), attendee_name, attendee_email
 
 ## Testing instructions
