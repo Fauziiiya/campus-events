@@ -30,7 +30,7 @@ Students often miss campus events because details are scattered across group cha
 
 1. Clone the repository:
    ```
-   git clone https://github.com/Fauziii/campus-events.git
+   git clone https://github.com/Fauziiiya/campus-events.git
    cd campus-events
    ```
 2. Create and activate a virtual environment:
