@@ -82,4 +82,10 @@ https://fauziii.pythonanywhere.com
 
 ## Screenshots
 
-(Add screenshots of the events list, create form, event page and edit page here.)
+![Events list](screenshots/events-list.png)
+
+![Create event form](screenshots/create-event.png)
+
+![Event page with registrations](screenshots/event-page.png)
+
+![Edit event form](screenshots/edit-event.png)
