@@ -24,7 +24,7 @@ I used Claude (made by Anthropic) in a chat as my main AI tool. I used it to pla
 
 ## 4. Changes I made to AI-generated code
 
-I mostly used the code as Claude generated it, because I’m a beginner and wanted to get a working app first. What I did myself was choose Project 3, choose Python and Flask because I have little knowledge in it and not JavaScript, test every feature, fix my project structure, and set up the deployment. I read through each part after Claude explained it, and I can explain how Create, Read, Update, Delete and registration work.
+I mostly used the code as Claude generated it, because I’m a beginner and wanted to get a working app first. What I did myself was choose Project 3, choose Python and Flask because I have little knowledge in it and not JavaScript, test every feature, fix my project structure, and set up the deployment. I read through each part after Claude explained it, and I can explain how Create, Read, Update, Delete and registration work. I noticed that the project brief required each event to have a category, and my app didn't have one, so I decided to add it. Claude wrote the code for it, and I applied it to app.py and the three templates, then tested it myself. Along the way I found that my events.html file hadn't saved, because my commit only listed two changed files when it should have listed three. I replaced the file and tested again. I also updated the live site by pulling the code onto PythonAnywhere and reloading, then checked that my old events still showed up.
 
 ## 5. Errors and how I resolved them
 
@@ -46,8 +46,5 @@ I mostly used the code as Claude generated it, because I’m a beginner and want
 
 ## 7. What I learned
 
-- CRUD stands for Create, Read, Update, and Delete, which are the four basic operations used to manage data in an application. 
-- The .gitignore file is important because it prevents unnecessary files, such as temporary files and environment settings, from being uploaded to GitHub. 
-- Secrets like passwords and API keys should never be uploaded to GitHub because someone could access them and misuse them. 
-- Testing with both good and bad input helps identify errors and ensures that the application handles unexpected situations correctly.
+Building this project taught me that CRUD, which stands for Create, Read, Update and Delete, is the basic set of operations behind almost any app that manages data, and I now understand how each one works in my own code. I also learned why a .gitignore file matters: it keeps files like my virtual environment, temporary files and my database out of GitHub. Secrets such as passwords and API keys must never be uploaded to GitHub, because anyone who finds them could misuse them, which is why my secret key is only set on PythonAnywhere and not in my repository. Testing with both good and bad input showed me that an app has to handle mistakes properly and not just work when everything is typed correctly. Using AI helped me move faster as a beginner, but I still had to read the code, test it and sort out problems myself.
 
