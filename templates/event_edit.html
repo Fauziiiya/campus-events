@@ -18,6 +18,13 @@
     <p>Title*<br><input name="title" value="{{ form.get('title') or '' }}"></p>
     <p>Description<br><textarea name="description">{{ form.get('description') or '' }}</textarea></p>
     <p>Venue<br><input name="venue" value="{{ form.get('venue') or '' }}"></p>
+    <p>Category<br>
+      <select name="category">
+        {% for c in categories %}
+          <option value="{{ c }}" {% if (form.get('category') or 'Other') == c %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+    </p>
     <p>Date*<br><input type="date" name="event_date" value="{{ form.get('event_date') or '' }}"></p>
     <p>Time<br><input name="event_time" value="{{ form.get('event_time') or '' }}"></p>
     <p>Capacity<br><input type="number" name="capacity" value="{{ form.get('capacity') or '' }}"></p>
