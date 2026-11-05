@@ -3,11 +3,17 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Campus Events</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>Campus Events</h1>
-  <p><a href="{{ url_for('create_event') }}">+ Create new event</a></p>
+  {% set icons = {'Academic': '🎓', 'Social': '🎉', 'Sports': '⚽', 'Career': '💼', 'Other': '📌'} %}
+
+  <header class="hero">
+    <h1>🎓 Campus Events</h1>
+    <p>Find what's happening on campus and sign up in seconds.</p>
+  </header>
+
+  <p><a class="btn" href="{{ url_for('create_event') }}">+ Create new event</a></p>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% for category, message in messages %}
@@ -17,10 +23,11 @@
 
   {% if events %}
     {% for event in events %}
+      {% set cat = event['category'] or 'Other' %}
       <div>
         <h3><a href="{{ url_for('event_detail', event_id=event['id']) }}">{{ event['title'] }}</a></h3>
-        <p>Category: {{ event['category'] or 'Other' }}</p>
-        <p>{{ event['event_date'] }} {{ event['event_time'] or '' }} · {{ event['venue'] or 'Venue TBA' }}</p>
+        <span class="badge badge-{{ cat|lower }}">{{ icons[cat] }} {{ cat }}</span>
+        <p>📅 {{ event['event_date'] }} {{ event['event_time'] or '' }} · 📍 {{ event['venue'] or 'Venue TBA' }}</p>
         <p>{{ event['description'] or '' }}</p>
         <p>Capacity: {{ event['capacity'] or 'Not set' }} · Organiser: {{ event['organiser_name'] or 'Not set' }}</p>
         <p><a href="{{ url_for('edit_event', event_id=event['id']) }}">Edit</a></p>
@@ -30,7 +37,6 @@
           <button type="submit">Delete</button>
         </form>
       </div>
-      <hr>
     {% endfor %}
   {% else %}
     <p>No events yet. Create the first one!</p>
